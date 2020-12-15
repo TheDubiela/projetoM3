@@ -113,10 +113,9 @@ var CasoController = new function() {
 
     this.update = function(idCaso) {
         var caso = this.getDadosCasoModal();
-        if($('#userId').val() != "" && $('#userId').val() != null) {
             if (CasoController.validateCaso(caso)) {
                 $.ajax({
-                    url: '/casoss/' + idCaso,
+                    url: '/casos/' + idCaso,
                     method: 'PUT',
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
@@ -137,7 +136,6 @@ var CasoController = new function() {
             } else {
                 alert("Dados incompletos ou com erros");
             }
-        }
     }
 
     this.edit = function(idCaso) {
