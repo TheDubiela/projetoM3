@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Casos</title>
+
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/style.css}">
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Processos</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="main" class="container-fluid" style="margin-top: 50px">
+    <div id="top" class="row">
+        <div class="col-sm-3">
+            <h2>Casos</h2>
+        </div>
+        <div class="col-sm-6">
+        </div>
+        <div class="col-sm-3">
+            <button id="cadastarUsuario" type="button" class="btn btn-primary pull-right h2" data-toggle="modal" data-target="#cadastrarUsuarioModal">Registrar-se</button>
+            <button id="logarUsuario" type="button" class="btn btn-primary pull-right h2" data-toggle="modal" data-target="#cadastrarUsuarioModal">Log-in</button>
+            <button id="cadastroCaso" type="button" class="btn btn-primary pull-right h2" data-toggle="modal" data-target="#cadastrarCasoModal">Novo Caso</button>
+            <button id="logOut" type="button" class="btn btn-primary pull-right h2" onclick="UserController.logout()" >Log-out</button>
+        </div>
+    </div>
+    <hr />
+    <div id="list" class="row">
+        <div class="table-responsive col-md-12">
+            <table class="table table-striped" cellspacing="0" cellpadding="0">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Email</th>
+                    <th>CEP</th>
+                    <th>Divida</th>
+                    <th>Situação</th>
+                    <th>Nº Na Justica</th>
+                    <th>Responsavel</th>
+                    <th class="actions">Ações</th>
+                </tr>
+                </thead>
+                <tbody id="casosTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="cadastrarCasoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="casoModalLabel">Dados do Caso</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="casoNome" class="col-form-label">Nome:</label>
+                        <input type="text" class="form-control" id="casoNome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="casoCpf" class="col-form-label">CPF:</label>
+                        <input type="text" class="form-control" id="casoCpf" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="casoEmail" class="col-form-label">Email:</label>
+                        <input type="email" class="form-control" id="casoEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="casoCep" class="col-form-label">CEP:</label>
+                        <input type="text" class="form-control" id="casoCep" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="casoNumero" class="col-form-label">Nº:</label>
+                        <input type="text" class="form-control" id="casoNumero" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="casoComplemento" class="col-form-label">Complemento:</label>
+                        <input type="text" class="form-control" id="casoComplemento" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="casoValor" class="col-form-label">Valor da Divida:</label>
+                        <input type="text" class="form-control" id="casoValor" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="casoObjetivo" class="col-form-label">Objetivo da Divida:</label>
+                        <input type="text" class="form-control" id="casoObjetivo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="casoSituacao" class="col-form-label">Situação:</label>
+                        <input type="text" class="form-control" id="casoSituacao" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="casoNumeroNaJustica" class="col-form-label">Nº na Justica:</label>
+                        <input type="text" class="form-control" id="casoNumeroNaJustica" value="">
+                    </div>
+                    <input type="hidden" id="casoId">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" onclick="CasoController.save()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cadastrarUsuarioModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalLabel">Dados do Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label id="label" for="userNome" class="col-form-label">Nome:</label>
+                        <input type="text" class="form-control" id="userNome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail" class="col-form-label">Email:</label>
+                        <input type="email" class="form-control" id="userEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userSenha" class="col-form-label">Senha:</label>
+                        <input type="password" class="form-control" id="userSenha" required>
+                    </div>
+                    <input type="hidden" id="userId">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button id="modalRegister" type="button" class="btn btn-primary" onclick="UserController.save()">Registrar</button>
+                <button id="modalLogin" type="button" class="btn btn-primary" onclick="UserController.login()">Login</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="listaDeEndereco" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="enderecoModalLabel">Endereço</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="enderecoCep" class="col-form-label">CEP:</label>
+                        <input type="text" class="form-control" id="enderecoCep" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="enderecoNumero" class="col-form-label">Nº da casa:</label>
+                        <input type="text" class="form-control" id="enderecoNumero" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="enderecoComplemento" class="col-form-label">Complemento:</label>
+                        <input type="text" class="form-control" id="enderecoComplemento" readonly>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="listaDeDivida" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="dividaModalLabel">Divida</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="dividaValor" class="col-form-label">Valor:</label>
+                        <input type="text" class="form-control" id="dividaValor" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="dividaObjetivo" class="col-form-label">Objetivo da Divida:</label>
+                        <input type="text" class="form-control" id="dividaObjetivo" readonly>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/assets/js/jquery.min.js}"></script>
+<script th:src="@{/assets/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/js/caso/CasoController.js}"></script>
+<script th:src="@{/assets/js/user/UserController.js}"></script>
+
+<script type="text/javascript">
+    $(function() {
+        UserController.logged();
+        CasoController.list();
+        $(document).ready(UserController.dynamicModal());
+    });
+</script>
+
+</body>
+</html>
